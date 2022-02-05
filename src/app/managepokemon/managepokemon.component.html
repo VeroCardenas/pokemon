@@ -1,0 +1,100 @@
+<p-toast></p-toast>
+
+<p-card>
+  <div>
+    <label style="font-weight: bold;">Listado de Pokemon</label>
+    <br>
+    <span class="p-input-icon-left">
+      <i class="pi pi-search" (click)="search()"></i>
+      <input type="text" pInputText placeholder="Buscar" [(ngModel)]="pokemonSearch" (change)="search()" />
+    </span>
+    <br>
+
+    <div style="text-align: right;">
+      <p-button label="Nuevo" icon="pi pi-plus" (click)="addNewPokemon()"></p-button>
+    </div>
+    <br>
+    <p-table [value]="pokemons" styleClass="p-datatable-gridlines">
+      <ng-template pTemplate="header">
+        <tr>
+          <th *ngFor="let col of columns" [style.width]="col.width">
+            {{col.header}}
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-pokemon let-index>
+        <tr>
+          <td>{{pokemon.name}}</td>
+          <td style="text-align: center;">
+            <img [alt]="pokemon.name" [src]="pokemon.image" width="32" style="vertical-align: middle" />
+          </td>
+          <td style="text-align: right;" >{{pokemon.attack}}</td>
+          <td style="text-align: right;" >{{pokemon.defense}}</td>
+          <td style="text-align: center">
+            <button pButton type="button" icon="pi pi-pencil"  class="p-button-rounded p-button-text" (click)="editPokemon(pokemon, index)"></button>
+            <button pButton type="button" icon="pi pi-trash"  class="p-button-rounded p-button-text p-button-danger" (click)="deletePokemon(pokemon, index)"></button>
+        </td>
+        </tr>
+      </ng-template>
+    </p-table>
+    <br>
+    <p-card *ngIf="showPokemon">
+        <form #pokemonForm='ngForm' novalidate>
+      <div style="width: 100%; text-align: center;">
+        <label>Nuevo Pokemon</label>
+      </div>
+      <br>
+      <div class="pokemonProperties">
+        <label class="labelProperties">Nombre: </label>
+          <input  class="valueProperty" type="text" pInputText [(ngModel)]="pokemon.name" name="name" required>
+      </div>
+      <div class="pokemonProperties">
+        <label class="labelProperties">Ataque: </label>
+        <div class="valueProperty">
+            <label style="width: 5%; display: inline-block;">0</label>
+            <div style="width: 90%; display: inline-block;"> 
+                <p-slider   [(ngModel)]="pokemon.attack" [min]="0" [max]="100" name="attack" required></p-slider>
+            </div>
+            <span style="width: 5%;display: inline-block;">100</span>
+        </div>
+        
+
+      </div>
+      <div class="pokemonProperties">
+        <label class="labelProperties">Imagen: </label>
+        <input class="valueProperty" type="text" pInputText [(ngModel)]="pokemon.image" required name="image">
+      </div>
+      <div class="pokemonProperties">
+        <label class="labelProperties">Defensa: </label>
+        <div class="valueProperty">
+            <label style="width: 5%; display: inline-block;">0</label>
+            <div style="width: 90%; display: inline-block;"> 
+                <p-slider  [(ngModel)]="pokemon.defense" [min]="0" [max]="100" name="defense" required></p-slider>
+            </div>
+            <span style="width: 5%;display: inline-block;">100</span>
+        </div>
+        
+      </div>
+      <div class="pokemonProperties">
+        <label class="labelProperties">Tipo: </label>
+        <div class="valueProperty" >
+          <p-dropdown [options]="types" [(ngModel)]="pokemon.type" [style]="{'width': '100%'}"
+           name="typePokemons" [required]="true"></p-dropdown>
+        </div>
+        
+      </div>
+      
+      
+      <div style="text-align: center; padding-top: 3%;">
+        <p-button label="Guardar" [disabled]="!pokemonForm.valid" icon="pi pi-save" (click)="savePokemon()"></p-button>
+        <div style="padding-left: 10px;display: inline-block;">
+          <p-button label="Cancelar"  icon="pi pi-times" (click)="cancel()"></p-button>
+        </div>
+        
+        
+      </div>
+
+    </form>
+    </p-card>
+  </div>
+</p-card>
